@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+let lat = 43.255203
+let long = -79.843826
+
 struct MoonPhaseCardView: View {
     let card: Card
     @State var smc: SunMoonCalculator? = nil
@@ -34,7 +37,7 @@ struct MoonPhaseCardView: View {
                             }
                         }.foregroundColor(card.TextColor.color())
                         Spacer()
-                        MoonView2(smc: smc! , size: geo.size.height-50)
+                        MoonView(smc: smc! , size: geo.size.height-50)
                     }
                 }.padding().background(card.Background.color())
             }
@@ -45,7 +48,7 @@ struct MoonPhaseCardView: View {
     
     func initialize() {
         do {
-            let smcM = try SunMoonCalculator(date: customDate, longitude: long, latitude: lat)
+            let smcM = try SunMoonCalculator(date: Date(), longitude: long, latitude: lat)
             smcM.calcSunAndMoon()
             smc = smcM
         } catch {
@@ -120,7 +123,7 @@ func dateFromJd(jd : Double) -> Date {
 // Using the efficiencies of SwiftUI paths to draw the moons shadow dependant on the illumination percentage of the moon. It took lots of trial & error, but finally the following formulas perfectly draw the moon's shadow.
 // I learned about drawing shapes in SwiftUI from: https://www.hackingwithswift.com/books/ios-swiftui/paths-vs-shapes-in-swiftui
 
-struct MoonView2: View {
+struct MoonView: View {
     var smc: SunMoonCalculator
     var size: CGFloat
     

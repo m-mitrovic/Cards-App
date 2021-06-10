@@ -9,7 +9,7 @@ import UIKit
 import SwiftUI
 
 // Initialize Card Class
-class Card {
+class Card: Encodable, Decodable {
     var CardType: Int
     var TextColor: String
     var Background: String
@@ -26,6 +26,22 @@ enum CardType: Int {
     case contacts = 1
     case motivational = 2
     case calendar  = 3
+}
+
+extension Card {
+    
+    var cardTypeName: String {
+        if self.CardType == 0 {
+            return "Moon Phases Card"
+        } else if self.CardType == 1 {
+            return "Contacts Card"
+        } else if self.CardType == 2 {
+            return "Motivational Quotes Card"
+        } else {
+            return "Calendar Card"
+        }
+    }
+    
 }
 
 extension String {
@@ -50,4 +66,8 @@ extension String {
             blue: Double(rgbValue & 0x0000FF) / 255.0
         )
     }
+}
+
+func savedCards() -> [Card] {
+    return [placeholderCard, placeholderCard, placeholderCard, placeholderCard, secondaryCard]
 }

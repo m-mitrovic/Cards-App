@@ -9,25 +9,28 @@ import SwiftUI
 
 let cardWidth = UIScreen.screenWidth-35
 let placeholderCard = Card(type: CardType.moonPhases.rawValue, textColor: "#000000", background: "#ffffff")
+let secondaryCard = Card(type: CardType.moonPhases.rawValue, textColor: "#ffffff", background: "#e67e22")
+let mainColor = Color(UIColor.systemPink)
 
 struct ContentView: View {
     @State var smc: SunMoonCalculator? = nil
-    let cards = [placeholderCard, placeholderCard, placeholderCard, placeholderCard]
+    @State var cards: [Card] = Save.decodeCards()
+    @State var sheet: Int?
     
     var body: some View {
         ZStack {
             VStack {
-                LinearGradient(gradient: Gradient(colors: [Color.blue, Color.black]), startPoint: .top, endPoint: .bottom).frame(width: UIScreen.screenWidth, height: 250).offset(x: 0, y: -50)
+                LinearGradient(gradient: Gradient(colors: [mainColor, Color.black]), startPoint: .top, endPoint: .bottom).frame(width: UIScreen.screenWidth, height: 250).offset(x: 0, y: -50)
                 Spacer()
             }.background(Color.black).edgesIgnoringSafeArea(.top)
             ScrollView(.vertical) {
                 VStack(alignment: .leading) {
-                    Text(greetingTitle).font(.title2).padding(.vertical, 15)
+                    Text(greetingTitle).font(appTitleFont).padding(.vertical, 15)
                     HStack {
                         Text("Today's Brief").font(.headline)
                         Spacer()
                         Button(action: {
-                            
+                            sheet = 1
                         }) {
                             Text("Edit")
                         }.buttonStyle(CustomSmallRoundedButtonStyle())
@@ -39,6 +42,12 @@ struct ContentView: View {
                         }
                     }.padding(.bottom, 15).padding(.top, 5)
                 }.padding(.horizontal, (UIScreen.screenWidth-cardWidth)/2).frame(width: UIScreen.screenWidth)
+            }
+        }.sheet(item: $sheet) { item in
+            if item == 1 { // Edit view
+                EditCardView(cards: $cards)
+            } else {
+                AddCardView(cards: $cards, index: 0)
             }
         }
     }
@@ -56,7 +65,10 @@ struct ContentView: View {
         } else {
             return "Good Morning"
         }
-        
+    }
+    
+    init() {
+        UINavigationBar.appearance().tintColor = UIColor(mainColor)
     }
 }
 
@@ -80,8 +92,8 @@ extension Date {
 struct CustomSmallRoundedButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
-            .padding(.horizontal, 25)
-            .padding(.vertical, 7)
+            .padding(.horizontal, 21)
+            .padding(.vertical, 6)
             .foregroundColor(Color.black)
             .background(Capsule().fill(Color.white))
             .font(.headline)
@@ -101,4 +113,8 @@ extension UIScreen {
    static let screenWidth = UIScreen.main.bounds.size.width
    static let screenHeight = UIScreen.main.bounds.size.height
    static let screenSize = UIScreen.main.bounds.size
+}
+
+extension Int: Identifiable {
+    public var id: Int { self }
 }
