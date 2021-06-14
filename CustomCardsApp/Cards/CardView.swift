@@ -15,6 +15,10 @@ struct CardView: View {
             switch (card.CardType) {
             case CardType.moonPhases.rawValue:
                 MoonPhaseCardView(card: card)
+            case CardType.contacts.rawValue:
+                ContactsCardView(card: card)
+            case CardType.quotes.rawValue:
+                QuotesCardView(card: card)
             case CardType.calendar.rawValue:
                 VStack { }
             default:

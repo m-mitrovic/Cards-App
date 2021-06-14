@@ -13,18 +13,29 @@ class Card: Encodable, Decodable {
     var CardType: Int
     var TextColor: String
     var Background: String
+    var Contacts: [Contact]
+    var QuoteCategory: String
     
-    init(type: Int, textColor: String, background: String) {
+    init(type: Int, textColor: String, background: String, contacts: [Contact] = [], quoteCategory: String = quoteCategories[0]) {
         self.CardType = type
         self.TextColor = textColor
         self.Background = background
+        self.Contacts = contacts
+        self.QuoteCategory = quoteCategory
     }
+}
+
+struct Contact: Encodable, Decodable {
+    var id: String
+    var name: String
+    var phoneNumber: String
+    var imageData: Data?
 }
 
 enum CardType: Int {
     case moonPhases = 0
     case contacts = 1
-    case motivational = 2
+    case quotes = 2
     case calendar  = 3
 }
 
@@ -42,10 +53,20 @@ extension Card {
         }
     }
     
+    func contactsImage(_ i: Int) -> UIImage {
+        if self.Contacts[i].imageData != nil {
+            let image = UIImage(data: self.Contacts[i].imageData!)
+            return image! //?? CustomContactsIcon(name: self.Contacts[i].name).asImage()!
+        } else {
+            print("nil image")
+            return UIImage(named: "moon")!//CustomContactsIcon(name: self.Contacts[i].name).asImage()!
+        }
+    }
+    
 }
 
 extension String {
-    // Convert HEX color to SwiftUI Color
+    /** Convert HEX color to SwiftUI Color */
      func color() -> Color {
         var cString:String = "\(self)".trimmingCharacters(in: .whitespacesAndNewlines).uppercased()
 
@@ -70,4 +91,57 @@ extension String {
 
 func savedCards() -> [Card] {
     return [placeholderCard, placeholderCard, placeholderCard, placeholderCard, secondaryCard]
+}
+
+extension View {
+    func snapshot() -> UIImage {
+        let controller = UIHostingController(rootView: self)
+        let view = controller.view
+
+        let targetSize = controller.view.intrinsicContentSize
+        view?.bounds = CGRect(origin: .zero, size: targetSize)
+        view?.backgroundColor = .clear
+
+        let renderer = UIGraphicsImageRenderer(size: targetSize)
+
+        return renderer.image { _ in
+            view?.drawHierarchy(in: controller.view.bounds, afterScreenUpdates: true)
+        }
+    }
+    
+    func asImage() -> UIImage? {
+        let controller = UIHostingController(rootView: self)
+        
+        // locate far out of screen
+        controller.view.frame = CGRect(x: 0, y: CGFloat(Int.max), width: 1, height: 1)
+        UIApplication.shared.windows.first!.rootViewController?.view.addSubview(controller.view)
+        
+        let size = controller.sizeThatFits(in: UIScreen.main.bounds.size)
+        controller.view.bounds = CGRect(origin: .zero, size: size)
+        controller.view.sizeToFit()
+        
+        let image = controller.view.asImage()
+        controller.view.removeFromSuperview()
+        return image
+    }
+}
+
+extension UIView {
+
+    func asImage() -> UIImage? {
+        if #available(iOS 10.0, *) {
+            let renderer = UIGraphicsImageRenderer(bounds: bounds)
+            return renderer.image { rendererContext in
+                layer.render(in: rendererContext.cgContext)
+            }
+        } else {
+            UIGraphicsBeginImageContextWithOptions(self.bounds.size, self.isOpaque, 0.0)
+            defer { UIGraphicsEndImageContext() }
+            guard let currentContext = UIGraphicsGetCurrentContext() else {
+                return nil
+            }
+            self.layer.render(in: currentContext)
+            return UIGraphicsGetImageFromCurrentImageContext()
+        }
+    }
 }

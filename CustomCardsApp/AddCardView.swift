@@ -6,31 +6,40 @@
 //
 
 import SwiftUI
+import Contacts
 
 let appTitleFont = Font.system(size: 24, weight: .semibold)
-let colors = ["#000000", "#ffffff", "#2ecc71", "#9b59b6", "#f1c40f"]
+let colors = ["#000000", "#ffffff", "#48dbfb", "#54a0ff", "#5f27cd", "#a55eea", "#ff9ff3", "#ff6b6b", "#eb3b5a", "#ff0000", "#e84118", "#f0932b", "#feca57", "#1dd1a1", "#079992", "#2f3542", "#747d8c", "#dfe4ea"]
 
 struct AddCardView: View {
     @Environment(\.presentationMode) var presentationMode
     @Binding var cards: [Card]
     @State var currentCard: Card = placeholderCard
     var index: Int
+    @State var sheetItem: Int?
     
     var body: some View {
         ZStack {
             VStack {
+                previewCard.padding(.top, 45)
                 ScrollView(.vertical, showsIndicators: false) {
                     VStack(alignment: .leading, spacing: 25) {
-                        Text("Create Your Card").font(appTitleFont)
-                        previewCard
+                        Text(index == 0 ? "Create A Card" : "Edit Your Card").font(appTitleFont)
                         cardTypeView
                         textColorPicker
                         backgroundColorPicker
                         
+                        if currentCard.CardType == CardType.contacts.rawValue {
+                            contactsPicker
+                        }
+                        
+                        if currentCard.CardType == CardType.quotes.rawValue {
+                            quoteCategoryPicker
+                        }
                         Spacer()
-                    }.padding(.vertical, 45).padding(.bottom, 15)
+                    }.padding(.vertical, 25).padding(.bottom, 40).padding(.horizontal, 15)
                 }
-            }.padding(.horizontal, 15)
+            }
             VStack {
                 Spacer()
                 Button(action: {
@@ -45,11 +54,25 @@ struct AddCardView: View {
                         presentationMode.wrappedValue.dismiss() // Dismiss view
                     }
                 }) {
-                    Text("Add Card")
+                    Text(index == 0 ? "Add Card" : "Save Changes")
                 }.buttonStyle(MultiColoredLargeButtonStyle()).padding(.bottom, 8)
             }
             ClosureIndicator()
-        }.navigationBarHidden(true)
+        }.navigationBarHidden(true).sheet(item: $sheetItem) { item in
+            if item == 1 {
+                ContactPicker(showPicker: .constant(true), onSelectContact: { contacts in
+                    let contactClass = Contact(id: contacts.identifier, name: contacts.givenName, phoneNumber: contacts.phoneNumbers[0].value.formatPhoneNumberAsDigits(), imageData: contacts.thumbnailImageData)
+                   
+                    var array = currentCard
+                    array.Contacts.append(contactClass)
+                    currentCard = editCard(contacts: array.Contacts)
+                })
+            }
+        }.onAppear() {
+            if index != 0 {
+                currentCard = cards[index-1]
+            }
+        }
     }
     
     //MARK: Card Type Segment --------------------------
@@ -85,16 +108,17 @@ struct AddCardView: View {
         return cardCategories[index].id == currentCard.CardType
     }
     
-    func editCard(type: Int? = nil, textColor: String? = nil, backgroundColor: String? = nil) -> Card {
+    func editCard(type: Int? = nil, textColor: String? = nil, backgroundColor: String? = nil, contacts: [Contact]? = nil, quoteCategory: String? = nil) -> Card {
         let Type = type ?? currentCard.CardType
         let TextColor = textColor ?? currentCard.TextColor
         let BackgroundColor = backgroundColor ?? currentCard.Background
+        let Contacts = contacts ?? currentCard.Contacts
+        let QuoteCategory = quoteCategory ?? currentCard.QuoteCategory
         
-        return Card(type: Type, textColor: TextColor, background: BackgroundColor)
+        return Card(type: Type, textColor: TextColor, background: BackgroundColor, contacts: Contacts, quoteCategory: QuoteCategory)
     }
     
     //MARK: Card Preview Segment --------------------------
-    
     var previewCard: some View {
         VStack(alignment: .leading) {
             Text("Preview").font(.headline).padding(.bottom, 3)
@@ -133,13 +157,60 @@ struct AddCardView: View {
         }
     }
     
+    
+    //MARK: CUSTOM CARD PICKERS
+    var contactsPicker: some View {
+        VStack(alignment: .leading) {
+            HStack {
+                Text("Contacts").font(.headline).padding(.bottom, 3)
+                Spacer()
+                
+                Button(action: {
+                    sheetItem = 1
+                }) {
+                    Text("Add contact")
+                }.buttonStyle(CustomSmallRoundedButtonStyle())
+            }
+            
+            VStack(spacing: 8) {
+                ForEach(currentCard.Contacts.indices, id: \.self) { i in
+                    HStack {
+                        Text(currentCard.Contacts[i].name)
+                        Spacer()
+                        Button(action: {
+                            var array = currentCard
+                            array.Contacts.remove(at: i)
+                            currentCard = editCard(contacts: array.Contacts)
+                        }) {
+                            Image(systemName: "trash")
+                                .font(.system(size: 20))
+                                .padding(5)
+                                .foregroundColor(.white)
+                                .background(Circle().fill(Color.red))
+                        }
+                    }.padding(.vertical, 4)
+                    Divider()
+                }
+            }
+        }
+    }
+    
+    //MARK: QUOTE CATEGORY PICKER
+    var quoteCategoryPicker: some View {
+        VStack(alignment: .leading) {
+            Text("Quote Category").font(.headline).padding(.bottom, 3)
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 8) {
+                    ForEach(quoteCategories.indices, id: \.self) { i in
+                        CustomTextItem(text: quoteCategories[i], selectedText: currentCard.QuoteCategory).onTapGesture {
+                            currentCard = editCard(quoteCategory: quoteCategories[i])
+                        }
+                    }
+                }.padding(.horizontal, 20)
+            }.padding(.horizontal, -15)
+        }
+    }
 }
-
-//struct AddCardView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        AddCardView(cards: .constant([]))
-//    }
-//}
 
 struct CardTypeClass {
     var icon: Image
@@ -151,6 +222,8 @@ struct CardTypeClass {
 var cardCategories = [
     CardTypeClass(icon: Image(systemName: "moon.fill"), id: CardType.moonPhases.rawValue, name: "Moon Phases", description: "Follow the phases of the moon."),
     CardTypeClass(icon: Image(systemName: "person.2.circle.fill"), id: CardType.contacts.rawValue, name: "Contacts", description: "Quickly call or message your most frequent contacts."),
+    CardTypeClass(icon: Image(systemName: "quote.bubble.fill"), id: CardType.quotes.rawValue, name: "Quotes", description: "View changing quotes from certain categories."),
+    CardTypeClass(icon: Image(systemName: "calendar"), id: CardType.calendar.rawValue, name: "Calendar", description: "A digital calendar."),
 ]
 
 struct MultiColoredLargeButtonStyle: ButtonStyle {
@@ -185,5 +258,34 @@ struct CustomColorItem: View {
     
     var colorBlock: some View {
         Rectangle().fill(color.color()).frame(width: 45, height: 45).cornerRadius(12).padding(1).background(Color(UIColor.systemGray3).cornerRadius(13))
+    }
+}
+
+struct CustomTextItem: View {
+    let text: String
+    let selectedText: String
+    
+    var body: some View {
+        VStack {
+            textBlock
+        }
+    }
+    
+    var textBlock: some View {
+        VStack {
+            Text(text).font(.headline)
+        }.frame(height: 35).padding(.horizontal, 20).background(text == selectedText ? mainColor : Color(UIColor.systemGray5)).cornerRadius(35/2)
+    }
+}
+
+/** Custom function to remove the styling on the phone number. Example: (905) 123-2144    turns to ->     9051232144 */
+extension CNPhoneNumber {
+    func formatPhoneNumberAsDigits() -> String {
+        var phoneNumber = self.stringValue
+        phoneNumber = phoneNumber.replacingOccurrences(of: "(", with: "")
+        phoneNumber = phoneNumber.replacingOccurrences(of: ")", with: "")
+        phoneNumber = phoneNumber.replacingOccurrences(of: " ", with: "")
+        phoneNumber = phoneNumber.replacingOccurrences(of: "-", with: "")
+        return phoneNumber
     }
 }

@@ -12,17 +12,20 @@ let placeholderCard = Card(type: CardType.moonPhases.rawValue, textColor: "#0000
 let secondaryCard = Card(type: CardType.moonPhases.rawValue, textColor: "#ffffff", background: "#e67e22")
 let mainColor = Color(UIColor.systemPink)
 
+var appInitialized = userDefaults.bool(forKey: "appInitialized")
+
 struct ContentView: View {
     @State var smc: SunMoonCalculator? = nil
     @State var cards: [Card] = Save.decodeCards()
     @State var sheet: Int?
+    @State var showIntro = false
     
     var body: some View {
         ZStack {
             VStack {
-                LinearGradient(gradient: Gradient(colors: [mainColor, Color.black]), startPoint: .top, endPoint: .bottom).frame(width: UIScreen.screenWidth, height: 250).offset(x: 0, y: -50)
+                LinearGradient(gradient: Gradient(colors: [mainColor, Color(UIColor.systemBackground)]), startPoint: .top, endPoint: .bottom).frame(width: UIScreen.screenWidth, height: 250).offset(x: 0, y: -50)
                 Spacer()
-            }.background(Color.black).edgesIgnoringSafeArea(.top)
+            }.background(Color(UIColor.systemBackground)).edgesIgnoringSafeArea(.top)
             ScrollView(.vertical) {
                 VStack(alignment: .leading) {
                     Text(greetingTitle).font(appTitleFont).padding(.vertical, 15)
@@ -36,20 +39,46 @@ struct ContentView: View {
                         }.buttonStyle(CustomSmallRoundedButtonStyle())
                     }
                     VStack(spacing: 15) {
-                        ForEach(cards.indices, id: \.self) { i in
-                            //Rectangle().fill(Color.white.opacity(0.12)).frame(width: cardWidth, height: cardWidth/1.8).cornerRadius(12)
-                            CardView(card: cards[i]).background(Color.white.opacity(0.12)).frame(width: cardWidth, height: cardWidth/1.8).cornerRadius(12)
+                        if cards.count == 0 && appInitialized == false { // Show 5 placeholder cards if no cards available
+                            ForEach(0..<5) { i in
+                                PlaceholderCardView().frame(width: cardWidth, height: cardWidth/1.8).cornerRadius(12)
+                            }
+                        } else {
+                            ForEach(cards.indices, id: \.self) { i in
+                                CardView(card: cards[i]).background(Color.white.opacity(0.12)).frame(width: cardWidth, height: cardWidth/1.8).cornerRadius(12).onTapGesture {
+                                    sheet = 100 + (i + 1)
+                                }
+                            }
                         }
+                        footerView
                     }.padding(.bottom, 15).padding(.top, 5)
                 }.padding(.horizontal, (UIScreen.screenWidth-cardWidth)/2).frame(width: UIScreen.screenWidth)
             }
+            IntroPopupViewLogic(show: $showIntro, sheet: $sheet)
         }.sheet(item: $sheet) { item in
             if item == 1 { // Edit view
                 EditCardView(cards: $cards)
-            } else {
+            } else if item >= 100 {
+                // If the sheet presented is greater than 100, that means that the user is looking to edit
+                // a card at the index of item-100
+                AddCardView(cards: $cards, index: item-100)//.onAppear() { editCard = 0 }
+            } else if item == 0 {
                 AddCardView(cards: $cards, index: 0)
             }
+        }.onAppear() {
+            showIntroView()
         }
+    }
+    
+    var footerView: some View {
+        HStack(alignment: .center, spacing: 30) {
+            Image("logo").resizable().scaledToFit().frame(width: 45, height: 45)
+            VStack(alignment: .leading) {
+                Text("Cards - V1.0.0").font(.headline)
+                Text("By Mihajlo M.").opacity(0.7)
+                Text("ICS 4U - Mr. Tedesco").opacity(0.7)
+            }
+        }.padding(.vertical, 20)
     }
     
     /**
@@ -69,6 +98,13 @@ struct ContentView: View {
     
     init() {
         UINavigationBar.appearance().tintColor = UIColor(mainColor)
+    }
+    
+    /** If user hasent initialized the app, show welcome message */
+    func showIntroView() {
+        if appInitialized != true {
+            showIntro.toggle()
+        }
     }
 }
 

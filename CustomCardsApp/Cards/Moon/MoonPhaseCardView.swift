@@ -24,15 +24,15 @@ struct MoonPhaseCardView: View {
                             Spacer()
                             VStack(alignment: .leading, spacing: -2) {
                                 Text("\(Int(smc!.moonIllumination * 100))% Illum.")
-                                Text("Age: \(Int(smc!.moonAge)) days")
+                                Text("Age: \(Int(smc!.moonAge)) days").padding(.bottom, 8)
                                 
                                 // Show the more recent moon event first
-                                if smc!.moonSetDate.timeA > smc!.moonRiseDate.timeA {
-                                    Text("Set: \(smc!.moonSetDate.timeA)").padding(.top, 8)
+                                if smc!.moonSetDate > smc!.moonRiseDate {
+                                    Text("Set: \(smc!.moonSetDate.timeA)")
                                     Text("Rise: \(smc!.moonRiseDate.timeA)")
                                 } else {
                                     Text("Rise: \(smc!.moonRiseDate.timeA)")
-                                    Text("Set: \(smc!.moonSetDate.timeA)").padding(.top, 8)
+                                    Text("Set: \(smc!.moonSetDate.timeA)")
                                 }
                             }
                         }.foregroundColor(card.TextColor.color())
@@ -52,7 +52,7 @@ struct MoonPhaseCardView: View {
             smcM.calcSunAndMoon()
             smc = smcM
         } catch {
-            print("failded")
+            print("Failed to calculate moon phase.")
         }
     }
 }
@@ -78,7 +78,7 @@ struct PlaceholderCardView: View {
                     Spacer()
                 }
             }
-        }.background(Color.white.opacity(0.12))
+        }.background(Color(UIColor.systemGray6))
     }
 }
 
