@@ -14,6 +14,7 @@ let mainColor = Color(UIColor.systemPink)
 
 var appInitialized = userDefaults.bool(forKey: "appInitialized")
 
+/** The main view loaded immediately as the app opens. Hosts the "home" page. */
 struct ContentView: View {
     @State var smc: SunMoonCalculator? = nil
     @State var cards: [Card] = Save.decodeCards()
@@ -108,6 +109,7 @@ struct ContentView: View {
     }
 }
 
+// Helper extensions
 extension Date {
     var hour: String {
         let timeFormatter = DateFormatter()

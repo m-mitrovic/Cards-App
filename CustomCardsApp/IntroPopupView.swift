@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/** The welcome popup shown to new users */
 struct IntroPopupView: View {
     @Environment(\.presentationMode) private var presentation
     @Binding var show: Bool
@@ -24,9 +25,13 @@ struct IntroPopupView: View {
                     show.toggle() // Dismiss this popup
                 }
             }) {
-                Text("Start").font(appTitleFont).foregroundColor(mainColor).padding(.top, 3)
+                HStack {
+                    Spacer()
+                    Text("Start").font(appTitleFont).foregroundColor(mainColor).padding(.top, 3)
+                    Spacer()
+                }
             }
-        }.padding(.vertical, 15).padding(.horizontal, 20)
+        }.padding(.vertical, 15).padding(.horizontal, 25)
         .frame(width: UIScreen.screenWidth-50)
         .background(Color(UIColor.systemGray5))
         .cornerRadius(12)

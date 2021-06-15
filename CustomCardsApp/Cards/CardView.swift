@@ -20,7 +20,7 @@ struct CardView: View {
             case CardType.quotes.rawValue:
                 QuotesCardView(card: card)
             case CardType.calendar.rawValue:
-                VStack { }
+                CalendarCardView(card: card)
             default:
                 VStack { }
             }
