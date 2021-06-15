@@ -16,7 +16,7 @@ The first week centered on planning the app, wireframing a prototype, and buildi
 ### Challenges I've Overcame
 - The main challenge I faced this week was how I would permanently save the cards a user makes for the next time they run the app. I overcame this by making a `Card` class which only utilized `Strings` & Numbers to save data. This meant saving the Color as a HEX string and converting it to SwiftUI. Since the `Card` class only uses basic Swift values, I can use Apple's UserDefaults framework to save it to a file and access it every time a user uses the app.
 
-## Week 2: (June 7 - June 11) - Ongoing
+## Week 2: (June 7 - June 11)
 <img src="https://i.imgur.com/xAZdF0d.jpg" width="300">
 In week 2, I focused on building the different cards. I began with the Moon Phases cards utilizing the framework SunMoonCalc<sup>1</sup>. I then went on to complete the contacts card, along with working on the calling/messaging actions of that card. I finally ended the week by creating an intro pop-up to direct new users.
 
