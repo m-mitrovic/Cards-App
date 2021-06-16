@@ -1,13 +1,19 @@
 # Cards App
  Automate your day with the Cards app. Programmed in Swift using the new SwiftUI framework.
- 
- #### By Mihajlo Mitrovic for ICS4U1 (Mr. Tedesco)
- 
+
+![Image of Cards App](https://i.imgur.com/2JhrIIY.png)
+#### By Mihajlo Mitrovic for ICS-4U1 (Mr. Tedesco)
+
 # Project Overview
-Cards allows users to create custom “cards” to quickly get informed and perform repatative actions efficiently. The user can configure the app to show the current phase of the moon, current calendar and days left in the month, launch their favourite contacts & apps, along with other actions. I feel this is the most optimal way to demonstrate the programming and software design concepts I’ve learned in this class (each card will be utilizing different programming principles).
+Cards allows users to create custom “cards” to quickly get informed and perform repatative actions efficiently. The user can configure the app to show the current phase of the moon, current calendar and days left in the month, launch their favourite contacts & apps, along with other actions. I feel this is the most optimal way to demonstrate the programming and software design concepts I’ve learned in this class because each card will be utilizing different programming principles.
+
+## [Video App Preview](https://youtu.be/_skOmWEtxfU)
+
+# Where to Start
+I recommend starting by watching the preview video attached. This will give you a visualization of what the code does. From then on, I suggest starting with the "ContentView.swift" file as it is the main app home screen. In the "Cards" folder, you can see the code behind each corresponding card.
 
 # My Progress
-Here I will update my progress (in chronological order) throughout the week with a summary of my challenges and what I've accomplished.
+Here was my progress (in chronological order) along with a summary of the challenges I faced and the timeline of my accomplishements.
 
 ## Week 1: (May 31 - June 4)
 ![Images of Prototypes](https://i.imgur.com/muS5O7Q.png)
@@ -34,6 +40,6 @@ In the final week, I've created a changing quotes card (parsed from an online JS
 - The next issue I faced was with the calendar card. I needed a way for the card text to be edited from the card hosting view and not the `CalendarGridView`. I first tried passing the `Card` property to the `CalendarGridView`, and although I was able to edit it - I still wanted to be able to style it from the card view. After spending quite some time reasearching, I solved it by utilizing a `DateView` which allowed me to pass every date of the month as a text property to be styled in the card view.
 
 # References
-Here are the third party frameworks I've used to assist with the building of the app:
+Here are the third party frameworks & tutorials I've used to assist with the building of the app:
 - [SunMoonCalc](https://github.com/kanchudeep/SunMoonCalculator): Using on-device calculations gets the illumination, angle, and other important datasets of the Moon.
-- [SwiftUI Path]https://www.hackingwithswift.com/books/ios-swiftui/creating-custom-paths-with-swiftui: Tutorial that helped me understand SwiftUI Paths for the moon phase card.
+- [SwiftUI Path](https://www.hackingwithswift.com/books/ios-swiftui/creating-custom-paths-with-swiftui): Tutorial that helped me understand SwiftUI Paths for the moon phase card.
