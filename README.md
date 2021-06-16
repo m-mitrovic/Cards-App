@@ -6,7 +6,7 @@
 # Project Overview
 Cards allows users to create custom “cards” to quickly get informed and perform repatative actions efficiently. The user can configure the app to show the current phase of the moon, current calendar and days left in the month, launch their favourite contacts & apps, along with other actions. I feel this is the most optimal way to demonstrate the programming and software design concepts I’ve learned in this class (each card will be utilizing different programming principles).
 
-# Updates
+# My Progress
 Here I will update my progress (in chronological order) throughout the week with a summary of my challenges and what I've accomplished.
 
 ## Week 1: (May 31 - June 4)
@@ -25,8 +25,13 @@ This week was littered with with smaller challenges, but the main ones were:
 - During the development process of the moon phase card, I couldn't figure out how to dim the image of the moon with regards to the illumination percentage. The issue is that the moon has an ever changing shadow which is once a circle, and then an crescent. I had to get creative, so instead of overlaying an additional circle to act as the moon's shadow, I utilized SwiftUI Paths for the first time. SwiftUI Paths let me draw a custom path of my own (a circle or an crescent). I got to work, and by using the illumination percentage, I finally built a shadow that would accurately display the moon's illumination.
 - Another issue that plauged me for a while was with the contact card. Since users input a phone number in many different styles, I needed my app to conform to a single style for all phone numbers included. What I found through trial and error was that if I stripped all the spaces, dashes, and parenthasis from the phone number, they could all follow the same format and work!
 
-## Week 3: (June 14 - June 16) - Upcoming
-In the final week, I plan to create a changing quotes card, a digital calendar, and finalize the app. 
+## Week 3: (June 14 - June 16)
+<img src="https://i.imgur.com/y3v1Tzj.jpg" width="300">
+In the final week, I've created a changing quotes card (parsed from an online JSON format), a digital calendar, and have finalize the app. I completed the introduction process for first time users, and fixed any withstanding bugs in the app.
+
+### Challenges I've Overcame
+- Accessing the quotes from an online database was filled with issues that I had to overcome. At first, parsing the data wasn't working because the `Quote` class was did not match with the JSON class that was provided. After adjusting the variable key names and adding an additional `CodingKeys` enum to the class, the quotes were finally parsed correctly. However, the issues didn't stop there. I then had to cache the quote on each app load becuase it would be too inefficient and unresponsive to request new ones everytime a user updates the view/cards. The solution to this issue was much more straightforward - I included a global variable called `cachedQuote` which = nil if no quotes are loaded, or returns the cached quote if it has already loaded.
+- The next issue I faced was with the calendar card. I needed a way for the card text to be edited from the card hosting view and not the `CalendarGridView`. I first tried passing the `Card` property to the `CalendarGridView`, and although I was able to edit it - I still wanted to be able to style it from the card view. After spending quite some time reasearching, I solved it by utilizing a `DateView` which allowed me to pass every date of the month as a text property to be styled in the card view.
 
 # References
 Here are the third party frameworks I've used to assist with the building of the app:
