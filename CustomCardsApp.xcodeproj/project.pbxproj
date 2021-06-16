@@ -15,6 +15,7 @@
 		1E4BF5EC2671C4F8005D928D /* SaveCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E4BF5EB2671C4F8005D928D /* SaveCard.swift */; };
 		1E97392E2676CFAF00AE3ED0 /* IntroPopupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E97392D2676CFAF00AE3ED0 /* IntroPopupView.swift */; };
 		1E9739312676FC0000AE3ED0 /* QuoteCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E9739302676FC0000AE3ED0 /* QuoteCardView.swift */; };
+		1EA2424B26793B1D00408C25 /* QuoteLogic.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EA2424A26793B1D00408C25 /* QuoteLogic.swift */; };
 		1EB836FA2666CE9800A46953 /* CustomCardsAppApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB836F92666CE9800A46953 /* CustomCardsAppApp.swift */; };
 		1EB836FC2666CE9800A46953 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1EB836FB2666CE9800A46953 /* ContentView.swift */; };
 		1EB836FE2666CE9D00A46953 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1EB836FD2666CE9D00A46953 /* Assets.xcassets */; };
@@ -35,6 +36,7 @@
 		1E4BF5EB2671C4F8005D928D /* SaveCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SaveCard.swift; sourceTree = "<group>"; };
 		1E97392D2676CFAF00AE3ED0 /* IntroPopupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroPopupView.swift; sourceTree = "<group>"; };
 		1E9739302676FC0000AE3ED0 /* QuoteCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteCardView.swift; sourceTree = "<group>"; };
+		1EA2424A26793B1D00408C25 /* QuoteLogic.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuoteLogic.swift; sourceTree = "<group>"; };
 		1EB836F62666CE9800A46953 /* CustomCardsApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CustomCardsApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1EB836F92666CE9800A46953 /* CustomCardsAppApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCardsAppApp.swift; sourceTree = "<group>"; };
 		1EB836FB2666CE9800A46953 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -81,6 +83,8 @@
 			isa = PBXGroup;
 			children = (
 				1E394DA1266E903A00B98B45 /* CardView.swift */,
+				1EB837082666D29000A46953 /* CardClass.swift */,
+				1E4BF5EB2671C4F8005D928D /* SaveCard.swift */,
 				1E026B872672D19300B5AFD3 /* Contacts */,
 				1E394D9F266E868100B98B45 /* Moon */,
 				1E97392F2676FBD000AE3ED0 /* Quotes */,
@@ -93,6 +97,7 @@
 			isa = PBXGroup;
 			children = (
 				1E9739302676FC0000AE3ED0 /* QuoteCardView.swift */,
+				1EA2424A26793B1D00408C25 /* QuoteLogic.swift */,
 			);
 			path = Quotes;
 			sourceTree = "<group>";
@@ -122,8 +127,6 @@
 				1E4BF5E726712E1B005D928D /* AddCardView.swift */,
 				1E4BF5E92671AC19005D928D /* EditCardView.swift */,
 				1E394DA0266E901300B98B45 /* Cards */,
-				1EB837082666D29000A46953 /* CardClass.swift */,
-				1E4BF5EB2671C4F8005D928D /* SaveCard.swift */,
 				1EB836FD2666CE9D00A46953 /* Assets.xcassets */,
 				1EB837022666CE9D00A46953 /* Info.plist */,
 				1EB836FF2666CE9D00A46953 /* Preview Content */,
@@ -224,6 +227,7 @@
 				1EB837152667366C00A46953 /* SunMoonCalc.swift in Sources */,
 				1EB837092666D29000A46953 /* CardClass.swift in Sources */,
 				1ECCB379267845D800F209FE /* CalendarCardView.swift in Sources */,
+				1EA2424B26793B1D00408C25 /* QuoteLogic.swift in Sources */,
 				1EB836FC2666CE9800A46953 /* ContentView.swift in Sources */,
 				1ECCB37B26785CCE00F209FE /* CalendarGridView.swift in Sources */,
 				1E9739312676FC0000AE3ED0 /* QuoteCardView.swift in Sources */,

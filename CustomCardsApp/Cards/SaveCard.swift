@@ -49,10 +49,7 @@ class Save {
             }
             return finalArray
         } else {
-            return [placeholderCard]
+            return []
         }
     }
-    
-
-    
 }

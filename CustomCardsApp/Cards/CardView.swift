@@ -22,7 +22,7 @@ struct CardView: View {
             case CardType.calendar.rawValue:
                 CalendarCardView(card: card)
             default:
-                VStack { }
+                VStack {}
             }
         }.background(PlaceholderCardView())
     }

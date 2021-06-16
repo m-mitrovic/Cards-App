@@ -2,12 +2,13 @@
 //  SunMoonCalc.swift
 //  TestingApp
 //
-//  Created by Mihajlo Mit on 2020-12-09.
+//  Created by Tomás Alonso Albi on 2016-12-09.
 //
 
 import Foundation
 
 // Moon Phase Calculations ported from ephemerides (in Java) by Tomás Alonso Albi
+// This class is from the SunMoonCalculator: https://github.com/kanchudeep/SunMoonCalculator
 
 extension FloatingPoint {
     /* Convert to degrees from radians*/

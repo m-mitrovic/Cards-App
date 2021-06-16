@@ -16,7 +16,7 @@ struct MoonPhaseCardView: View {
     
     var body: some View {
         GeometryReader { geo in
-            if smc != nil { // Show moon widget
+            if smc != nil { // Show moon widget when moon position calculated
                 VStack {
                     HStack {
                         VStack(alignment: .leading) {
@@ -67,7 +67,7 @@ struct PlaceholderCardView: View {
                 }
                 
                 VStack(alignment: .leading) {
-                    Capsule().frame(width: geo.size.width-30, height: 20)
+                    Capsule().frame(width: geo.size.width/1.1, height: 20)
                     Spacer()
                     Capsule().frame(width: geo.size.width/2, height: 20)
                     Capsule().frame(width: geo.size.width/1.65, height: 65)

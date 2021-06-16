@@ -60,9 +60,9 @@ struct AddCardView: View {
             ClosureIndicator()
         }.navigationBarHidden(true).sheet(item: $sheetItem) { item in
             if item == 1 {
-                ContactPicker(showPicker: .constant(true), onSelectContact: { contacts in
-                    let contactClass = Contact(id: contacts.identifier, name: contacts.givenName, phoneNumber: contacts.phoneNumbers[0].value.formatPhoneNumberAsDigits(), imageData: contacts.thumbnailImageData)
-                   
+                ContactPicker(showPicker: .constant(true), onSelectContact: { contacts in // When a contact is returned from the contact picker
+                    let contactClass = Contact(id: contacts.identifier, name: contacts.givenName, phoneNumber: contacts.phoneNumber, email: contacts.email, imageData: contacts.thumbnailImageData)
+                    
                     var array = currentCard
                     array.Contacts.append(contactClass)
                     currentCard = editCard(contacts: array.Contacts)
@@ -108,6 +108,7 @@ struct AddCardView: View {
         return cardCategories[index].id == currentCard.CardType
     }
     
+    /** Change single values of the `Card` class neatly */
     func editCard(type: Int? = nil, textColor: String? = nil, backgroundColor: String? = nil, contacts: [Contact]? = nil, quoteCategory: String? = nil) -> Card {
         let Type = type ?? currentCard.CardType
         let TextColor = textColor ?? currentCard.TextColor
@@ -212,20 +213,7 @@ struct AddCardView: View {
     }
 }
 
-struct CardTypeClass {
-    var icon: Image
-    var id: Int
-    var name: String
-    var description: String
-}
-
-var cardCategories = [
-    CardTypeClass(icon: Image(systemName: "moon.fill"), id: CardType.moonPhases.rawValue, name: "Moon Phases", description: "Follow the phases of the moon."),
-    CardTypeClass(icon: Image(systemName: "person.2.circle.fill"), id: CardType.contacts.rawValue, name: "Contacts", description: "Quickly call or message your most frequent contacts."),
-    CardTypeClass(icon: Image(systemName: "quote.bubble.fill"), id: CardType.quotes.rawValue, name: "Quotes", description: "View changing quotes from certain categories."),
-    CardTypeClass(icon: Image(systemName: "calendar"), id: CardType.calendar.rawValue, name: "Calendar", description: "A digital calendar."),
-]
-
+// Unified large button style used on the "Add card" button & others.
 struct MultiColoredLargeButtonStyle: ButtonStyle {
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration.label
@@ -288,4 +276,23 @@ extension CNPhoneNumber {
         phoneNumber = phoneNumber.replacingOccurrences(of: "-", with: "")
         return phoneNumber
     }
+}
+
+extension CNContact {
+    var phoneNumber: String? {
+        if self.phoneNumbers.count > 0 {
+            return self.phoneNumbers[0].value.formatPhoneNumberAsDigits()
+        } else { // No phone number found
+            return nil
+        }
+    }
+    
+    var email: String? {
+        if self.emailAddresses.count > 0 {
+            return self.emailAddresses[0].value as String
+        } else {
+            return nil
+        }
+    }
+    
 }

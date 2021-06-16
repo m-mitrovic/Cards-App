@@ -28,7 +28,8 @@ class Card: Encodable, Decodable {
 struct Contact: Encodable, Decodable {
     var id: String
     var name: String
-    var phoneNumber: String
+    var phoneNumber: String?
+    var email: String?
     var imageData: Data?
 }
 
@@ -145,3 +146,20 @@ extension UIView {
         }
     }
 }
+
+
+// MARK: Category Card Class
+struct CardTypeClass {
+    var icon: Image
+    var id: Int
+    var name: String
+    var description: String
+}
+
+// Different card types + description to be used in-app. Allows easily adding new cards - as I plan to do.
+var cardCategories = [
+    CardTypeClass(icon: Image(systemName: "moon.fill"), id: CardType.moonPhases.rawValue, name: "Moon Phases", description: "Follow the phases of the moon."),
+    CardTypeClass(icon: Image(systemName: "person.2.circle.fill"), id: CardType.contacts.rawValue, name: "Contacts", description: "Quickly call or message your most frequent contacts."),
+    CardTypeClass(icon: Image(systemName: "quote.bubble.fill"), id: CardType.quotes.rawValue, name: "Quotes", description: "View changing quotes from certain categories."),
+    CardTypeClass(icon: Image(systemName: "calendar"), id: CardType.calendar.rawValue, name: "Calendar", description: "A digital calendar."),
+]

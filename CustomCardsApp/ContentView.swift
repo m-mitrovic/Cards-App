@@ -7,11 +7,11 @@
 
 import SwiftUI
 
+// App-wide Variables
 let cardWidth = UIScreen.screenWidth-35
 let placeholderCard = Card(type: CardType.moonPhases.rawValue, textColor: "#000000", background: "#ffffff")
 let secondaryCard = Card(type: CardType.moonPhases.rawValue, textColor: "#ffffff", background: "#e67e22")
-let mainColor = Color(UIColor.systemPink)
-
+let mainColor = "#4b7bec".color()
 var appInitialized = userDefaults.bool(forKey: "appInitialized")
 
 /** The main view loaded immediately as the app opens. Hosts the "home" page. */

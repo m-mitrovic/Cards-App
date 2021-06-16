@@ -58,12 +58,10 @@ struct EditCardView: View {
 
 
 struct ClosureIndicator: View {
-    
     var body: some View {
         VStack {
             Capsule().fill(Color(UIColor.systemGray5)).frame(width: 65, height: 10).padding(.vertical, 11)
             Spacer()
         }
     }
-    
 }

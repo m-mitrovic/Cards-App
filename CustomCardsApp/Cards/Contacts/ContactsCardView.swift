@@ -46,28 +46,31 @@ struct ContactsCardView: View {
         }
     }
     
+    /** Allows user to call, message, FaceTime, and email. Smartly adapts with whichever contacts are given.*/
     func contactsAction(_ contact: Contact) {
         let alert = UIAlertController(title: contact.name, message: nil, preferredStyle: .actionSheet)
         
-        let callAction = UIAlertAction(title: "Call", style: .default, handler: { (UIAlertAction) in
-            //if let url = URL(string: "tel://\(contact.phoneNumber)"), UIApplication.shared.canOpenURL(url) {
-            let url = URL(string: "tel://\(contact.phoneNumber)")!
+        if contact.phoneNumber != nil {
+            let callAction = UIAlertAction(title: "Call", style: .default, handler: { (UIAlertAction) in
+                if let url = URL(string: "tel://\(contact.phoneNumber!)"), UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url)
-            //}
-        })
-        callAction.setValue(UIImage(systemName: "phone.fill"), forKey: "image")
-        alert.addAction(callAction)
-        
-        let messageAction = UIAlertAction(title: "Message", style: .default, handler: { (UIAlertAction) in
-            if let url = URL(string: "sms://\(contact.phoneNumber)"), UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url)
-            }
-        })
-        messageAction.setValue(UIImage(systemName: "message.fill"), forKey: "image")
-        alert.addAction(messageAction)
+                }
+            })
+            callAction.setValue(UIImage(systemName: "phone.fill"), forKey: "image")
+            alert.addAction(callAction)
+            
+            let messageAction = UIAlertAction(title: "Message", style: .default, handler: { (UIAlertAction) in
+                if let url = URL(string: "sms://\(contact.phoneNumber!)"), UIApplication.shared.canOpenURL(url) {
+                    UIApplication.shared.open(url)
+                }
+            })
+            messageAction.setValue(UIImage(systemName: "message.fill"), forKey: "image")
+            alert.addAction(messageAction)
+        }
         
         let facetimeAction = UIAlertAction(title: "FaceTime", style: .default, handler: { (UIAlertAction) in
-            if let url = URL(string: "facetime://\(contact.phoneNumber)"), UIApplication.shared.canOpenURL(url) {
+            let facetimeCaller = contact.phoneNumber != nil ? contact.phoneNumber! : contact.email
+            if let url = URL(string: "facetime://\(facetimeCaller ?? "")"), UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url)
             }
         })
@@ -75,12 +78,23 @@ struct ContactsCardView: View {
         alert.addAction(facetimeAction)
         
         let facetimeAudioAction = UIAlertAction(title: "FaceTime Audio", style: .default, handler: { (UIAlertAction) in
-            if let url = URL(string: "facetime-audio://\(contact.phoneNumber)"), UIApplication.shared.canOpenURL(url) {
+            let facetimeCaller = contact.phoneNumber != nil ? contact.phoneNumber! : contact.email
+            if let url = URL(string: "facetime-audio://\(facetimeCaller ?? "")"), UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url)
             }
         })
         facetimeAudioAction.setValue(UIImage(systemName: "phone.fill"), forKey: "image")
         alert.addAction(facetimeAudioAction)
+        
+        if contact.email != nil {
+            let emailAction = UIAlertAction(title: "Email", style: .default, handler: { (UIAlertAction) in
+                if let url = URL(string: "mailto:\(contact.email!)?subject=sdf") {
+                    UIApplication.shared.open(url)
+                }
+            })
+            emailAction.setValue(UIImage(systemName: "envelope.fill"), forKey: "image")
+            alert.addAction(emailAction)
+        }
         
         alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: { (UIAlertAction)in
                 // User dismissed

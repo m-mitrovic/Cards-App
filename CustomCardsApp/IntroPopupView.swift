@@ -21,6 +21,8 @@ struct IntroPopupView: View {
             Divider()
             Button(action: {
                 sheet = 0 // Present `AddCardView`
+                appInitialized = true
+                userDefaults.setValue(appInitialized, forKey: "appInitialized")
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     show.toggle() // Dismiss this popup
                 }
@@ -34,7 +36,7 @@ struct IntroPopupView: View {
         }.padding(.vertical, 15).padding(.horizontal, 25)
         .frame(width: UIScreen.screenWidth-50)
         .background(Color(UIColor.systemGray5))
-        .cornerRadius(12)
+        .cornerRadius(17)
     }
     
 }
